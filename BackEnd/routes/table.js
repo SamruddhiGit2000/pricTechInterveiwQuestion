@@ -12,8 +12,11 @@ router.get('/', (request, response) => {
   })
 })
 
-router.post('/person', (request, response) => {
+router.post('/person/update', (request, response) => {
   const { fname, lname,cname } = request.body
+  if (!fname || !lname || !cname) {
+    return response.status(400).send({ message: 'Missing required fields' });
+  }
   const statement = `insert into EMP (FirstName, LastName,ComponyName) values ('${fname}','${lname}','${cname}')`
   db.execute(statement, (error, data) => {
     response.send(data)
@@ -33,7 +36,6 @@ router.put('/person/:param', (request, response) => {
 
 router.delete('/person/:param', (request, response) => {
   const { param} = request.params;
-
   const statement = `delete from EMP where FirstName like "${param}"`
   db.execute(statement, (error, data) => {
     response.send('deleted');
