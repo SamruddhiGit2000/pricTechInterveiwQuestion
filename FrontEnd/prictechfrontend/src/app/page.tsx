@@ -11,7 +11,14 @@ export default function Home(): any {
   
   function handleFormSubmit(e:any){
     e.preventDefault();
-    jsonObj.push([inputFName,inputLName, inputCName]);
+    fetch("http://localhost:5000/person/update",{
+      method:"POST",
+      headers:{
+        "content-type":"application/json",
+      },
+      body: JSON.stringify({fname:`${inputFName}`,lname:`${inputLName}`,cname:`${inputCName}`})
+    }).then(response=>response.json()).then(data=>console.log(data+ "send to API")).catch(error=>console.log(error))
+    .finally(()=>console.log("end"));
     setInputFName("");
     setInputLName("");
     setInputCName("");
