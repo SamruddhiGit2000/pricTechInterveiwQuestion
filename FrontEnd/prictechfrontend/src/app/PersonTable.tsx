@@ -19,6 +19,20 @@ function PersonTable(props:any):any{
     if(dataa.length===0){
         return "";
     }
+
+    function handleUpdate(fname,lname,cname){
+        fname= window.prompt("firstname", fname);
+        lname= window.prompt("lastname", lname);
+        cname= window.prompt("CompanyName",cname);
+        fetch(`http://localhost:5000/person/${fname}`,{
+            method:"PUT",
+            headers:{
+              "content-type":"application/json",
+            },
+            body: JSON.stringify({fname:`${fname}`,lname:`${lname}`,cname:`${cname}`})
+          }).then(response=>response.json()).then(data=>console.log(data+ "send to API")).catch(error=>console.log(error))
+    }
+
     function handleRemoveElement(e){
         console.log(e)
         
@@ -26,6 +40,8 @@ function PersonTable(props:any):any{
         method:"DELETE"
       }).then(response=>response.json()).then(data=>console.log(data+ "send to API")).catch(error=>console.log(error))
     }
+
+
     return <>
         <h1>Person Details table: </h1>
         <div className="relative overflow-x-auto">
@@ -66,7 +82,7 @@ function PersonTable(props:any):any{
                                             <button type="button" 
                                             className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                             onClick={()=>{
-                                                console.log("HandleEdit");
+                                                handleUpdate(ele.FirstName,ele.LastName,ele.ComponyName);
                                             }}
                                             >Edit</button>
                                             <button type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" 
